@@ -52,10 +52,7 @@ struct RegisterView: View {
                     .padding(.horizontal, 30)
                 
                 Button("Register") {
-                    
-                    guard password == confirmPassword else { return }
-                    
-                    db.registerUser(name: name, email: email, password: password)
+                    db.registerUser(name: name, email: email, password: password, confirmPassword: confirmPassword)
                 }
                 .bold()
                 .padding()

@@ -10,13 +10,13 @@ import FirebaseFirestore
 import FirebaseAuth
 
 class DbConnection: ObservableObject {
-        
+    
     var db = Firestore.firestore()
     
     let COLLECTION_UNIVERSITIES = "universities"
     @Published var universities: [ApiUniversity] = []
     var universityListener: ListenerRegistration?
-
+    
     var auth = Auth.auth()
     let COLLECTION_USER_DATA = "user_data"
     @Published var currentUser: User?
@@ -46,7 +46,12 @@ class DbConnection: ObservableObject {
     
     /// REGISTER
     
-    func registerUser(name: String, email: String, password: String) {
+    func registerUser(name: String, email: String, password: String, confirmPassword: String) {
+        
+        guard password == confirmPassword else {
+            print("Error: Passwords do not match!")
+            return
+        }
         
         auth.createUser(withEmail: email, password: password) { authResult, error in
             
