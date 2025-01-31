@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct RegisterView: View {
+    @State var name = ""
     @State var email = ""
     @State var password = ""
+    @State var confirmPassword = ""
     
     var body: some View {
         
@@ -23,6 +25,12 @@ struct RegisterView: View {
             Text("Register").font(.largeTitle).bold().foregroundStyle(.black)
             
             VStack {
+                TextField("Name", text: $name)
+                    .padding()
+                    .textFieldStyle(.roundedBorder)
+                    .textInputAutocapitalization(.never)
+                    .padding(.horizontal, 30)
+                
                 TextField("Email address", text: $email)
                     .padding()
                     .textFieldStyle(.roundedBorder)
@@ -30,6 +38,12 @@ struct RegisterView: View {
                     .padding(.horizontal, 30)
                 
                 SecureField("Password", text: $password)
+                    .padding()
+                    .textFieldStyle(.roundedBorder)
+                    .textInputAutocapitalization(.never)
+                    .padding(.horizontal, 30)
+                
+                SecureField("Confirm Password", text: $confirmPassword)
                     .padding()
                     .textFieldStyle(.roundedBorder)
                     .textInputAutocapitalization(.never)
@@ -47,10 +61,18 @@ struct RegisterView: View {
                 .clipShape(.buttonBorder)
                 .padding()
             
+                NavigationLink(destination: LoginView(), label: {
+                    Text("Already have an account? Login")
+                        .foregroundStyle(Color("PrimaryColor"))
+                        .bold()
+                        .padding()
+                        .underline()
+                })
                 
             }
             
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         
     }
 }

@@ -46,6 +46,14 @@ struct LoginView: View {
                 .background(Color("PrimaryColor"))
                 .clipShape(.buttonBorder)
                 .padding()
+                
+                NavigationLink(destination: RegisterView(), label: {
+                    Text("Don't have an account? Register")
+                        .foregroundStyle(Color("PrimaryColor"))
+                        .bold()
+                        .padding()
+                        .underline()
+                })
             }
             
         }
