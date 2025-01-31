@@ -34,6 +34,20 @@ struct RegisterView: View {
                     .textFieldStyle(.roundedBorder)
                     .textInputAutocapitalization(.never)
                     .padding(.horizontal, 30)
+                
+                Button("Register") {
+                    // code to write
+                }
+                .bold()
+                .padding()
+                .padding(.horizontal, 25)
+                .padding(.vertical, 5)
+                .foregroundStyle(.white)
+                .background(Color("PrimaryColor"))
+                .clipShape(.buttonBorder)
+                .padding()
+            
+                
             }
             
         }
