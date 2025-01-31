@@ -11,6 +11,8 @@ struct LoginView: View {
     @State var email = ""
     @State var password = ""
     
+    @EnvironmentObject var db: DbConnection
+    
     var body: some View {
         
         VStack {
@@ -36,7 +38,7 @@ struct LoginView: View {
                     .padding(.horizontal, 30)
                 
                 Button("Login") {
-                    // code to write
+                    db.loginUser(email: email, password: password)
                 }
                 .bold()
                 .padding()
@@ -62,5 +64,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    LoginView().environmentObject(DbConnection())
 }

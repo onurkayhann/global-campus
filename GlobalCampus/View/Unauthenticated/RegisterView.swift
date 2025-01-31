@@ -13,6 +13,8 @@ struct RegisterView: View {
     @State var password = ""
     @State var confirmPassword = ""
     
+    @EnvironmentObject var db: DbConnection
+    
     var body: some View {
         
         VStack {
@@ -50,7 +52,10 @@ struct RegisterView: View {
                     .padding(.horizontal, 30)
                 
                 Button("Register") {
-                    // code to write
+                    
+                    guard password == confirmPassword else { return }
+                    
+                    db.registerUser(name: name, email: email, password: password)
                 }
                 .bold()
                 .padding()
@@ -78,5 +83,5 @@ struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView()
+    RegisterView().environmentObject(DbConnection())
 }

@@ -10,19 +10,18 @@ import FirebaseFirestore
 import FirebaseAuth
 
 class DbConnection: ObservableObject {
+        
     var db = Firestore.firestore()
-    var auth = Auth.auth()
     
-    let COLLECTION_USER_DATA = "user_data"
     let COLLECTION_UNIVERSITIES = "universities"
-    
-    var universities: [ApiUniversity] = []
-    
+    @Published var universities: [ApiUniversity] = []
+    var universityListener: ListenerRegistration?
+
+    var auth = Auth.auth()
+    let COLLECTION_USER_DATA = "user_data"
     @Published var currentUser: User?
     @Published var currentUserData: UserData?
-    
     var userDataListener: ListenerRegistration?
-    var universityListener: ListenerRegistration?
     
     init() {
         
@@ -72,6 +71,18 @@ class DbConnection: ObservableObject {
     
     func loginUser(email: String, password: String) {
         auth.signIn(withEmail: email, password: password)
+    }
+    
+    /// LOGOUT
+    
+    func signOut() {
+        do {
+            try auth.signOut()
+            currentUser = nil
+            currentUserData = nil
+        } catch _ {
+            
+        }
     }
     
     /// REMOVE UNIVERSITY FROM USER APPLICATION

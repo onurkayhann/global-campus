@@ -1,24 +1,27 @@
-//
-//  ContentView.swift
-//  GlobalCampus
-//
-//  Created by Onur Kayhan on 2025-01-29.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var db: DbConnection
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        
+        if db.currentUser != nil {
+            // Logged in view
+            NavigationStack {
+                HomeView()
+            }
+        } else {
+            // Not logged in view
+            NavigationStack {
+                LoginView()
+            }
         }
-        .padding()
+        
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView().environmentObject(DbConnection())
 }
+
+// TODO: ADD TABVIEW HERE
