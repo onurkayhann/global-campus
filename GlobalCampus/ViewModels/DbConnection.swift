@@ -25,12 +25,13 @@ class DbConnection: ObservableObject {
     
     init() {
         
-        auth.addStateDidChangeListener { auth, user in
+        let _ = auth.addStateDidChangeListener { auth, user in
             
             if let user = user {
                 // Användaren har loggat in
                 self.currentUser = user
                 self.startUniversityListener()
+                self.startUserDataListener()
                 
             } else {
                 // Användaren har loggat ut
@@ -111,7 +112,6 @@ class DbConnection: ObservableObject {
     
     func startUniversityListener() {
         universityListener = db.collection(COLLECTION_UNIVERSITIES).addSnapshotListener { snapshot, error in
-            
             if let error = error {
                 print("Error on snapshot: \(error.localizedDescription)")
                 return
@@ -119,19 +119,22 @@ class DbConnection: ObservableObject {
             
             guard let snapshot = snapshot else { return }
             
-            self.universities = []
-            
-            for document in snapshot.documents {
-                
-                do {
-                    let university = try document.data(as: ApiUniversity.self)
-                } catch let error {
-                    print("Something went wrong: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                self.universities = snapshot.documents.compactMap { document in
+                    do {
+                        let university = try document.data(as: ApiUniversity.self)
+                        print("Fetched university: \(university.name), Country: \(university.country)")
+                        return university
+                    } catch let error {
+                        print("Error decoding university: \(error.localizedDescription)")
+                        return nil
+                    }
                 }
+                print("Total universities fetched: \(self.universities.count)")
             }
-            
         }
     }
+
     
     func startUserDataListener() {
         userDataListener = db.collection(COLLECTION_USER_DATA).addSnapshotListener { snapshot, error in
