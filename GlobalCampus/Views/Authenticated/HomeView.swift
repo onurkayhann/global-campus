@@ -1,10 +1,4 @@
 //
-//  HomeView.swift
-//  GlobalCampus
-//
-//  Created by Onur Kayhan on 2025-01-31.
-//
-
 import SwiftUI
 
 struct HomeView: View {
@@ -14,12 +8,8 @@ struct HomeView: View {
         
         VStack {
             Text("Universities!").font(.title2)
-            
                 ForEach(db.universities) { university in
-                
-                    Text(university.name)
-                    Text(university.country)
-                    
+                    UniversityCard(university: university)
             }
             
             Button("Logout") {
@@ -31,7 +21,7 @@ struct HomeView: View {
             .padding(.vertical, 5)
             .foregroundStyle(.white)
             .background(.red)
-            .clipShape(.buttonBorder)
+            .clipShape(Capsule())
             .padding()
             
         }.padding()

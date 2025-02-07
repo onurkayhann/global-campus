@@ -1,35 +1,52 @@
 import SwiftUI
 
 struct UniversityCard: View {
+    @EnvironmentObject var db: DbConnection
+    
     var university: ApiUniversity
+    
+    private var isEnrolled: Bool {
+           db.currentUserData?.universityApplication.contains(university.id ?? "") ?? false
+       }
     
     var body: some View {
         VStack(alignment: .center) {
             Text(university.name)
-                .foregroundStyle(.white)
+                .foregroundStyle(Color("ThirdColor"))
                 .bold()
             
             Text(university.country)
-                .foregroundStyle(.white)
+                .foregroundStyle(Color("ThirdColor"))
                 .bold()
             
             Spacer()
             
             HStack {
-                Button("Enroll") {
-                    // function to add to user list
+                
+                Button(action: {
+                    guard let universityId = university.id else { return }
+                    
+                    if isEnrolled {
+                        db.deleteUniversityFromApplication(universityId: universityId)
+                    } else {
+                        db.addUniversityToApplication(universityId: universityId)
+                    }
+                    
+                }) {
+                    Text(isEnrolled ? "Enrolled" : "Enroll")
                 }
                 .padding()
                 .padding(.horizontal, 25)
                 .padding(.vertical, 5)
                 .background(Color("ButtonColor"))
-                .foregroundColor(Color("PrimaryColor"))
+                .foregroundColor(Color("ThirdColor"))
                 .bold()
-                .cornerRadius(8)
+                .clipShape(Capsule())
                 
                 Spacer()
             }
         }
+        
         .padding()
         .frame(width: 325, height: 200, alignment: .leading)
         .background(Color("PrimaryColor"))

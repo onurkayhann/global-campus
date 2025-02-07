@@ -1,10 +1,3 @@
-//
-//  DbConnection.swift
-//  GlobalCampus
-//
-//  Created by Onur Kayhan on 2025-01-29.
-//
-
 import Foundation
 import FirebaseFirestore
 import FirebaseAuth
@@ -41,6 +34,7 @@ class DbConnection: ObservableObject {
                 
                 self.userDataListener?.remove()
                 self.userDataListener = nil
+                self.currentUserData = nil
             }
         }
     }
@@ -91,21 +85,32 @@ class DbConnection: ObservableObject {
         }
     }
     
+    /// ADD UNIVERSITY TO USER APPLICATION
+    
+    func addUniversityToApplication(universityId: String) {
+        guard let currentUser = currentUser else { return }
+        
+        db.collection(COLLECTION_USER_DATA)
+            .document(currentUser.uid)
+            .updateData(["universityApplication": FieldValue.arrayUnion([universityId])])
+    }
+
     /// REMOVE UNIVERSITY FROM USER APPLICATION
     
-    func deleteUniversityFromApplication(id: UUID) {
-        let universityToDelete = universities.first { $0.id == id }
+    func deleteUniversityFromApplication(universityId: String) {
+        guard let currentUser = currentUser else { return }
         
-        guard let universityToDelete = universityToDelete else { return }
-        guard let universityId = universityToDelete.id else { return }
-        
-        db.collection(COLLECTION_USER_DATA).document(universityId.uuidString).delete { error in
-            if let error = error {
-                print("Error deleting university: \(error.localizedDescription)")
-            } else {
-                print("University successfully deleted.")
+        db.collection(COLLECTION_USER_DATA)
+            .document(currentUser.uid)
+            .updateData([
+                "universityApplication": FieldValue.arrayRemove([universityId])
+            ]) { error in
+                if let error = error {
+                    print("Error removing university from application: \(error.localizedDescription)")
+                } else {
+                    print("University successfully removed from application.")
+                }
             }
-        }
     }
     
     /// LISTENERS
@@ -137,33 +142,22 @@ class DbConnection: ObservableObject {
 
     
     func startUserDataListener() {
-        userDataListener = db.collection(COLLECTION_USER_DATA).addSnapshotListener { snapshot, error in
+        guard let currentUser = currentUser else { return }
+        
+        userDataListener = db.collection(COLLECTION_USER_DATA).document(currentUser.uid).addSnapshotListener { snapshot, error in
             
             if let error = error {
-                print("Error on snapshot: \(error.localizedDescription)")
+                print("Error listening to user data! \(error.localizedDescription)")
                 return
             }
             
             guard let snapshot = snapshot else { return }
             
-            guard let currentUser = self.currentUser else { return }
-            
-            let foundUserDataDoc = snapshot.documents.first { $0.documentID == currentUser.uid }
-            
-            guard let foundUserDataDoc = foundUserDataDoc else {
-                print("A UserData document was not found for the logged in user!")
-                return
-            }
-            
             do {
-                let foundUserData = try foundUserDataDoc.data(as: UserData.self)
-                self.currentUserData = foundUserData
-            } catch let error {
-                print("Error transforming userData dictionary to UserData struct! \(error.localizedDescription)")
+                self.currentUserData = try snapshot.data(as: UserData.self)
+            } catch _ {
+                print("Could not convert the user's data")
             }
-            
-            
         }
     }
-    
 }
