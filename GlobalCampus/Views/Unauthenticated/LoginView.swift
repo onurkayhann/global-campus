@@ -18,7 +18,7 @@ struct LoginView: View {
                     .scaledToFit()
                     .frame(width: 150, height: 150)
                 
-                Text("Login").font(.largeTitle).bold().foregroundStyle(Color("SecondaryColor"))
+                Text("Login").font(.largeTitle).bold().foregroundStyle(Color("ThirdColor"))
                 
                 VStack {
                     TextField("Email address", text: $email)
@@ -40,14 +40,14 @@ struct LoginView: View {
                     .padding()
                     .padding(.horizontal, 25)
                     .padding(.vertical, 5)
-                    .foregroundStyle(Color("SecondaryColor"))
+                    .foregroundStyle(Color("CustomWhite"))
                     .background(Color("PrimaryColor"))
                     .clipShape(Capsule())
                     .padding()
                     
                     NavigationLink(destination: RegisterView(), label: {
                         Text("Don't have an account? Register")
-                            .foregroundStyle(Color("SecondaryColor"))
+                            .foregroundStyle(Color("ThirdColor"))
                             .bold()
                             .padding()
                             .underline()

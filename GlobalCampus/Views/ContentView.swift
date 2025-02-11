@@ -3,11 +3,6 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var db: DbConnection
     @State private var selectedTab = 0
-    
-    init() {
-        // Set the unselected tab color globally
-        UITabBar.appearance().unselectedItemTintColor = UIColor(named: "PrimaryColor")
-    }
 
     var body: some View {
         if db.currentUser != nil {
@@ -27,8 +22,27 @@ struct ContentView: View {
                     Label("About", systemImage: "info.circle")
                 }
                 .tag(1)
+
+                NavigationStack {
+                    SearchUniversityView()
+                }
+                .tabItem {
+                    Label("Search", systemImage: "magnifyingglass")
+                }
+                .tag(2)
+
+                NavigationStack {
+                    ProfileView()
+                }
+                .tabItem {
+                    Label("Profile", systemImage: "person.circle")
+                }
+                .tag(3)
             }
-            .tint(Color("SecondaryColor")) // Selected tab color
+            .onAppear {
+                UITabBar.appearance().unselectedItemTintColor = UIColor(named: "PrimaryColor")
+            }
+            .tint(Color("ThirdColor"))
         } else {
             NavigationStack {
                 LoginView()
@@ -42,7 +56,5 @@ struct ContentView: View {
 }
 
 
-
-
-// TODO: ADD TABVIEW HERE
 // TODO: CHANGE ENROLLED BUTTON TO SOMETHING MORE DISABLED GRAYISH
+// TODO: BACK THING HAS TO BE RESOLVED

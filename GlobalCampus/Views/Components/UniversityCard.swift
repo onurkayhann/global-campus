@@ -54,7 +54,7 @@ struct UniversityCard: View {
             .cornerRadius(15)
             .overlay(
                 RoundedRectangle(cornerRadius: 15)
-                    .stroke(Color("SecondaryColor"), lineWidth: 3)
+                    .stroke(Color("ThirdColor"), lineWidth: 3)
             )
         }
     }
