@@ -14,10 +14,10 @@
             filePath = "GlobalCampus/GlobalCampusApp.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "body"
-            landmarkType = "24">
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "GlobalCampusApp"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

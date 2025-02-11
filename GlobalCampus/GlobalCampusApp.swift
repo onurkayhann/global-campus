@@ -1,10 +1,3 @@
-//
-//  GlobalCampusApp.swift
-//  GlobalCampus
-//
-//  Created by Onur Kayhan on 2025-01-29.
-//
-
 import SwiftUI
 import FirebaseCore
 
