@@ -1,17 +1,28 @@
 import Foundation
 import FirebaseFirestore
 
-struct ApiUniversity: Codable, Identifiable {
-    
-    @DocumentID var id: String?
-    var name: String
-    var country: String
+struct LoginRequest: Encodable {
+    var email: String
+    var password: String
 }
 
-/*
-extension ApiUniversity {
-    func toUniversityApplication() -> UniversityApplication {
-        return UniversityApplication(id: id, name: name, country: country)
-    }
+struct RegisterRequest: Encodable {
+    var name: String
+    var email: String
+    var pasword: String
 }
-*/
+
+struct AuthResponse: Decodable {
+    var success: Bool
+    var message: String
+}
+
+struct UniversityResponse: Codable {
+    var description: [ApiUniversity]
+}
+
+struct ApiUniversity: Codable, Identifiable {
+    @DocumentID var id: String?
+    var name: String 
+    var country: String
+}
