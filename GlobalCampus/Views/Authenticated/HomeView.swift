@@ -21,7 +21,7 @@ struct HomeView: View {
 
                 ScrollView {
                     VStack(spacing: 15) {
-                        ForEach(db.universities) { university in
+                        ForEach(universityManager.topRankedUniversities) { university in
                             UniversityCard(university: university)
                                 .padding(.horizontal, 20)
                         }
@@ -42,9 +42,21 @@ struct HomeView: View {
                 .padding(.bottom, 20)
             }
         }
+        .onAppear {
+            Task {
+                do {
+                    try await universityManager.getTopUniversities()
+                    //try await universityManager.getUpcomingMovies()
+                } catch {
+                    print("Error fetching universities: \(error)")
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    HomeView().environmentObject(DbConnection())
+    HomeView()
+        .environmentObject(DbConnection())
+        .environmentObject(UniversityManager())
 }

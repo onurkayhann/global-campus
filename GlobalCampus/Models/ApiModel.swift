@@ -17,12 +17,22 @@ struct AuthResponse: Decodable {
     var message: String
 }
 
-struct UniversityResponse: Codable {
-    var description: [ApiUniversity]
-}
+typealias UniversityResponse = [ApiUniversity]
 
 struct ApiUniversity: Codable, Identifiable {
-    @DocumentID var id: String?
-    var name: String 
+    var id: String? { UUID().uuidString }
+    var name: String
+    var country: String
+}
+
+extension ApiUniversity {
+    func toSavedUniversity() -> SavedUniversity {
+        return SavedUniversity(id: id, name: name, country: country)
+    }
+}
+
+struct SavedUniversity: Codable {
+    var id: String?
+    var name: String
     var country: String
 }

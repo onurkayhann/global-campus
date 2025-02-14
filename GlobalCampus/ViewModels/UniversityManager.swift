@@ -4,6 +4,8 @@ class UniversityManager: ObservableObject {
     let api = Api()
     
     @Published var universities: [ApiUniversity] = []
+    @Published var topRankedUniversities: [ApiUniversity] = []
+    
     @Published var userInput: String = ""
     
     let BASE_URL = "http://universities.hipolabs.com"
@@ -11,18 +13,18 @@ class UniversityManager: ObservableObject {
     init() {
         Task {
             do {
-                
+                try await getTopUniversities()
             } catch {
-                
+                print("Error loading univerrsities: \(error.localizedDescription)")
             }
         }
     }
     
     func getTopUniversities() async throws {
-        let retrievedUniversities: UniversityResponse = try await api.get(url: "\(BASE_URL)/search?name=technical")
+        let retrievedUniversities: UniversityResponse = try await api.get(url: "\(BASE_URL)/search?country=turkey")
         
         DispatchQueue.main.async {
-            self.universities = retrievedUniversities.description
+            self.topRankedUniversities = retrievedUniversities
         }
     }
     
@@ -39,7 +41,7 @@ class UniversityManager: ObservableObject {
         let retrievedUniversities: UniversityResponse = try await api.get(url: "\(BASE_URL)/search?name=\(userInput)")
         
         DispatchQueue.main.async {
-            self.universities = retrievedUniversities.description
+            self.universities = retrievedUniversities
         }
     }
 }
