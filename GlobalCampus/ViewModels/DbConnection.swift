@@ -17,7 +17,6 @@ class DbConnection: ObservableObject {
     var userDataListener: ListenerRegistration?
     
     init() {
-        
         let _ = auth.addStateDidChangeListener { auth, user in
             
             if let user = user {

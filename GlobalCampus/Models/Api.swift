@@ -20,9 +20,6 @@ class Api {
             
             return decodedResponse
         } catch let error {
-            
-            print("Error! \(error)")
-            
             throw APIErrors.invalidData
         }
     }

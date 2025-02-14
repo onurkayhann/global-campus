@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var db: DbConnection
+    @EnvironmentObject var universityManager: UniversityManager
     
     var body: some View {
         ZStack {
@@ -9,11 +10,14 @@ struct HomeView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                Text("Universities!")
-                    .font(.title2)
-                    .bold()
-                    .foregroundColor(Color("SecondaryColor"))
-                    .padding(.top, 10)
+                HStack(spacing: 0) {
+                    Text("Welcome ").font(.title).foregroundStyle(Color("SecondaryColor"))
+                    Text(db.currentUserData?.name ?? "No user found")
+                        .foregroundStyle(Color("PrimaryColor"))
+                        .font(.title)
+                        .bold()
+                }
+                .padding(.top, 30)
 
                 ScrollView {
                     VStack(spacing: 15) {

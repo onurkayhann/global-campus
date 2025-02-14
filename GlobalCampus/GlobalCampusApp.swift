@@ -15,10 +15,13 @@ struct GlobalCampusApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject var dbConnection = DbConnection()
+    @StateObject var universityManager = UniversityManager()
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(dbConnection)
+            ContentView()
+                .environmentObject(dbConnection)
+                .environmentObject(universityManager)
         }
     }
 }
