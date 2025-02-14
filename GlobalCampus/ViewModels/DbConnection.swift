@@ -86,31 +86,52 @@ class DbConnection: ObservableObject {
     
     /// ADD UNIVERSITY TO USER APPLICATION
     
-    func addUniversityToApplication(universityId: String) {
+    func addUniversityToApplication(universityName: String) {
         guard let currentUser = currentUser else { return }
-        
-        db.collection(COLLECTION_USER_DATA)
-            .document(currentUser.uid)
-            .updateData(["universityApplication": FieldValue.arrayUnion([universityId])])
-    }
 
-    /// REMOVE UNIVERSITY FROM USER APPLICATION
-    
-    func deleteUniversityFromApplication(universityId: String) {
-        guard let currentUser = currentUser else { return }
-        
+        DispatchQueue.main.async {
+            if self.currentUserData?.universityApplication.contains(universityName) == false {
+                self.currentUserData?.universityApplication.append(universityName)
+            }
+        }
+
         db.collection(COLLECTION_USER_DATA)
             .document(currentUser.uid)
-            .updateData([
-                "universityApplication": FieldValue.arrayRemove([universityId])
-            ]) { error in
+            .updateData(["universityApplication": FieldValue.arrayUnion([universityName])]) { error in
                 if let error = error {
-                    print("Error removing university from application: \(error.localizedDescription)")
+                    print("❌ Error adding university: \(error.localizedDescription)")
+
+                    DispatchQueue.main.async {
+                        self.currentUserData?.universityApplication.removeAll { $0 == universityName }
+                    }
                 } else {
-                    print("University successfully removed from application.")
+                    print("✅ University added successfully: \(universityName)")
                 }
             }
     }
+
+    func deleteUniversityFromApplication(universityName: String) {
+        guard let currentUser = currentUser else { return }
+
+        DispatchQueue.main.async {
+            self.currentUserData?.universityApplication.removeAll { $0 == universityName }
+        }
+
+        db.collection(COLLECTION_USER_DATA)
+            .document(currentUser.uid)
+            .updateData(["universityApplication": FieldValue.arrayRemove([universityName])]) { error in
+                if let error = error {
+                    print("❌ Error removing university: \(error.localizedDescription)")
+
+                    DispatchQueue.main.async {
+                        self.currentUserData?.universityApplication.append(universityName)
+                    }
+                } else {
+                    print("✅ University removed successfully: \(universityName)")
+                }
+            }
+    }
+
     
     /// LISTENERS
     
