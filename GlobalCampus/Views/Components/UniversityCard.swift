@@ -58,9 +58,9 @@ struct UniversityCard: View {
             )
         }
     }
-    
 }
 
 #Preview {
-    UniversityCard(university: ApiUniversity(name: "Stockholms University", country: "Sweden")).environmentObject(DbConnection())
+    UniversityCard(university: ApiUniversity(name: "Stockholms University", country: "Sweden"))
+        .environmentObject(DbConnection())
 }
