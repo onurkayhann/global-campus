@@ -30,6 +30,14 @@ struct ContentView: View {
                     Label("Search", systemImage: "magnifyingglass")
                 }
                 .tag(2)
+                
+                NavigationStack {
+                    ApplicationView()
+                }
+                .tabItem {
+                    Label("Application", systemImage: "graduationcap.fill")
+                }
+                .tag(3)
 
                 NavigationStack {
                     ProfileView()
@@ -37,7 +45,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Profile", systemImage: "person.circle")
                 }
-                .tag(3)
+                .tag(4)
             }
             .onAppear {
                 UITabBar.appearance().unselectedItemTintColor = UIColor(named: "PrimaryColor")

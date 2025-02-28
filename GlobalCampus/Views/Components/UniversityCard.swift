@@ -4,7 +4,6 @@ struct UniversityCard: View {
     @EnvironmentObject var db: DbConnection
     var university: ApiUniversity
 
-    // ✅ Check if the user is enrolled in the university
     private var isEnrolled: Bool {
         db.currentUserData?.universityApplication.contains(university.name) ?? false
     }
@@ -29,7 +28,7 @@ struct UniversityCard: View {
                         let universityName = university.name
 
                         if isEnrolled {
-                            db.deleteUniversityFromApplication(universityName: universityName) // ✅ Allow toggle back
+                            db.deleteUniversityFromApplication(universityName: universityName)
                         } else {
                             db.addUniversityToApplication(universityName: universityName)
                         }
@@ -40,16 +39,16 @@ struct UniversityCard: View {
                             .padding(.vertical, 5)
                             .background(
                                 isEnrolled
-                                ? Color("PrimaryColor").opacity(0.7)  // ✅ Darker/muted when enrolled
-                                : Color("ButtonColor") // ✅ Normal button color
+                                ? Color("PrimaryColor").opacity(0.7)
+                                : Color("ButtonColor")
                             )
-                            .foregroundColor(isEnrolled ? Color("ThirdColor").opacity(0.8) : Color("ThirdColor")) // ✅ Muted text color when enrolled
+                            .foregroundColor(isEnrolled ? Color("ThirdColor").opacity(0.8) : Color("ThirdColor"))
                             .bold()
                             .clipShape(Capsule())
                             .overlay(
-                                Capsule().stroke(Color("ThirdColor"), lineWidth: isEnrolled ? 2 : 0) // ✅ Add subtle border when enrolled
+                                Capsule().stroke(Color("ThirdColor"), lineWidth: isEnrolled ? 2 : 0)
                             )
-                            .opacity(isEnrolled ? 0.8 : 1.0) // ✅ Slightly dim when enrolled
+                            .opacity(isEnrolled ? 0.8 : 1.0)
                     }
                     
                     Spacer()
